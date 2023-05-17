@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<title>Contact - Travlr Getaways Website Template</title>
 	<link rel="stylesheet" href="css/style.css" type="text/css">
+	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
 </head>
 <body>
 	<div id="background">
@@ -38,15 +39,12 @@
 								</table>
 							</form>
 							<h2>Travlr Getaways</h2>
+							{{#each contacts}}
 							<p>
-								<span>Address:</span> 123 Lorem Ipsum Cove, Sed Ut City, LI 12345
+							<span>{{this.type}}</span>{{this.info}}
 							</p>
-							<p>
-								<span>Telephone Number:</span> 1-800-999-9999
-							</p>
-							<p>
-								<span>Fax Number:</span> 1-800-111-1111
-							</p>
+							{{/each}}
+							
 						</div>
 					</div>
 				</div>

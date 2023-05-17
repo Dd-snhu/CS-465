@@ -1,0 +1,13 @@
+[
+    {
+        "type": "Address:",
+        "info": "123 Lorem Ipsum Cove, Sed Ut City, LI 12345"
+    },{
+        "type": "Telephone Number:",
+        "info": "1-800-999-9999"
+
+    },{
+        "type": "Fax Number:",
+        "info": "1-800-111-1111"
+    }
+]

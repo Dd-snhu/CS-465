@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<title>Travlr Getaways Website Template</title>
 	<link rel="stylesheet" href="css/style.css" type="text/css">
+	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
 </head>
 <body>
 	<div id="background">
@@ -12,11 +13,13 @@
 			{{> header}}
 			<div id="contents">
 				<div id="adbox">
-					<img src="images/sea-sound.jpg" alt="Img">
-					<h1>Enjoy the Summer with Us!</h1>
+					{{#each main}}
+					<img src="images/{{this.image}}" alt="Img">
+					<h1>{{this.header}}</h1>
 					<p>
-						This website template has been designed by <a href="http://www.freewebsitetemplates.com/">Free Website Templates</a> for you, for free. You can replace all this text with your own text. You can remove any link to our website from this website template, you're free to use this website template without linking back to us. If you're having problems editing this website template, then don't hesitate to ask for help on the <a href="http://www.freewebsitetemplates.com/forums/">Forum</a>.
+						{{{this.description}}}
 					</p>
+					{{/each}}
 				</div>
 				<div id="main">
 					<div class="box">
@@ -24,20 +27,16 @@
 							<div>
 								<h3>Latest Blog</h3>
 								<ul>
+									{{#each blog}}
 									<li>
-										<h4><a href="/news">2023 Best Beaches Contest Winners</a></h4>
-										<span>April 02, 2023</span>
+										<h4><a href="{{this.link}}">{{this.header}}</a></h4>
+										<span>{{this.date}}</span>
 										<p>
-											Integer magna leo, posuere et dignissim vitae, porttitor at odio. Pellentesque a metus nec magna placerat volutpat. Nunc nisi mi, elementum sit amet...
+											{{{this.description}}}
 										</p>
 									</li>
-									<li>
-										<h4><a href="/news">Top 10 Diving Spots</a></h4>
-										<span>May 29, 2023</span>
-										<p>
-											Maecenas scelerisque odio quis arcu fringilla malesuada. Nulla facilisi. In libero nulla, fermentum ut pretium ac, pharetra et eros...
-										</p>
-									</li>
+									{{/each}}
+									
 								</ul>
 							</div>
 						</div>
@@ -46,27 +45,25 @@
 						<div>
 							<div>
 								<h3>Testimonials</h3>
+								{{#each testimonials}}
 								<p>
-									“In hac habitasse platea dictumst. Integer purus justo, egestas eu consectetur eu, cursus in tortor. Quisque nec nunc ac mi ultrices iaculis. Aenean quis elit mauris, nec vestibulum lorem.” <span>- <a href="/">Juan De La Cruz</a></span>
+									“{{this.info}}” <span>- <a href="{{this.link}}">{{this.author}}</a></span>
 								</p>
+								{{/each}}
 							</div>
 						</div>
 					</div>
 				</div>
+
+			<!-- changed dives.html to /travel until page dives is made -->	
+			
 				<div id="sidebar">
-					<div class="section">
-						<a href="/rooms"><img src="images/rooms.png" alt="Img"></a>
-					</div>
-
-					<!-- changed dives.html to /travel until page dives is made -->
-
-					<div class="section">
-						<a href="/travel"><img src="images/dive-site.png" alt="Img"></a> 
-					</div>
-					<div class="section">
-						<a href="/foods"><img src="images/food.png" alt="Img"></a>
-					</div>
-				</div>
+					{{#each sidebar}}
+					<div class="section">						
+						<a href="{{this.link}}"><img src="images/{{this.image}}" alt="Img"></a>
+					</div>	
+					{{/each}}
+				</div>				
 			</div>
 		</div>
 	    {{> footer}}					

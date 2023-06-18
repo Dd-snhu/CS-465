@@ -1,14 +1,17 @@
 const express = require('express');
 const router = express.Router();
 
-const tripsCrontroller = require('../controllers/trips');
+const tripsController = require('../controllers/trips');
 
 router
     .route('/trips')
-    .get(tripsCrontroller.tripsList);
+    .get(tripsController.tripsList)
+    .post(tripsController.tripsAddTrip);
 
 router
     .route('/trips/:tripCode')
-    . get(tripsCrontroller.tripsFindByCode);
+    .get(tripsController.tripsFindByCode)
+    .put(tripsController.tripsUpdateTrip)
+    .delete(tripsController.tripsDeleteTrip);
 
 module.exports = router;

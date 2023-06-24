@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
-const Model = mongoose.model('trips');
+const Trip = mongoose.model('trips');
+const User = mongoose.model('users');
 
 const tripsList = async (req, res) => {
-    Model
+    Trip
         .find({})
         .exec((err, trips)=> {
             if (!trips) {
@@ -23,7 +24,7 @@ const tripsList = async (req, res) => {
 
 const tripsFindByCode = async (req, res) => {
 
-    Model
+    Trip
     .find({ 'code': req.params.tripCode})
     .exec((err, trips)=> {
         if (!trips) {
@@ -43,8 +44,37 @@ const tripsFindByCode = async (req, res) => {
 
 };
 
+const getUser = (req, res, callback) => {
+    if (req.payload && req.payload.email) {            
+      User
+        .findOne({ email : req.payload.email })         
+        .exec((err, user) => {
+          if (!user) {
+            return res
+              .status(404)
+              .json({"message": "User not found"});
+          } else if (err) {
+            console.log(err);
+            return res
+              .status(404)
+              .json(err);
+           }
+          callback(req, res, user.name);                
+         });
+    } else {
+      return res
+        .status(404)
+        .json({"message": "User not found"});
+    }
+  };
+
+
 const tripsAddTrip = async (req, res) => {
-    Model
+
+    getUser(req, res,
+        (req, res)=> {
+        
+    Trip
     .create({
         code: req.body.code,
         name: req.body.name,
@@ -65,12 +95,22 @@ const tripsAddTrip = async (req, res) => {
             .status(201)
             .json(trip);
         }    
-    }   
-)};
+    }       
+    )
+
+    }
+    )
+
+};
+
 
 const tripsUpdateTrip = async (req, res) => {
     console.log(req.body);
-    Model
+
+    getUser(req, res,
+        (req, res)=> {
+
+    Trip
     .findOneAndUpdate({ 'code': req.params.tripCode }, {
         code: req.body.code,
         name: req.body.name,
@@ -102,20 +142,26 @@ const tripsUpdateTrip = async (req, res) => {
                 .status(500) // server error
                 .json(err);
         });
+
+        }
+        )
+
     }
 
+    
+    /*
     const tripsDeleteTrip = async (req, res) => {
         console.log(req.body);
         Model
         .findOneAndDelete({ 'code': req.params.tripCode },
 
-    }    
-       
+    };    
+    */
 
 module.exports = {
     tripsList,
     tripsFindByCode,
     tripsAddTrip,
     tripsUpdateTrip,
-    tripsDeleteTrip
+    //tripsDeleteTrip
 };

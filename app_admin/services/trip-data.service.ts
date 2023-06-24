@@ -1,7 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Http } from '@angular/http';
+import { AuthResponse } from 'models/authresponse';
+import { BROWSER_STORAGE } from 'src/app/storage';
+import { User } from 'models/user';
+
 
 import { Trip } from '../models/trip';
+
+
 import { TripCardComponent } from 'src/app/trip-card/trip-card.component';
 
 
@@ -9,7 +15,9 @@ import { TripCardComponent } from 'src/app/trip-card/trip-card.component';
 
   export class TripDataService {
 
-    constructor(private http: Http) { }
+    constructor(private http: Http,
+      @Inject(BROWSER_STORAGE) private storage: Storage
+      ) { }
 
     private apiBaseUrl= 'http://localhost:3000/api/';
     private tripUrl = `${this.apiBaseUrl}trips/`
@@ -23,12 +31,12 @@ import { TripCardComponent } from 'src/app/trip-card/trip-card.component';
       .catch(this.handleError)
     }
 
-    public getTrip(tripCode: string): Promise<Trip[]> {
+    public getTrip(tripCode: string): Promise<Trip> {
       console.log('Inside TripDataService#getTrip(tripCode)');
       return this.http
       .get(this.tripUrl + tripCode)
       .toPromise()
-      .then(response => response.json() as Trip[])
+      .then(response => response.json() as Trip)
       .catch(this.handleError);
     }
 
@@ -64,6 +72,23 @@ import { TripCardComponent } from 'src/app/trip-card/trip-card.component';
     private handleError(error: any): Promise<any> {
       console.error('Something has gone wrong', error);
       return Promise.reject(error.message || error);
+    }
+
+    public login(user: User): Promise<AuthResponse> {
+      return this.makeAuthApiCall('login', user);
+    }
+
+    public register(user: User): Promise<AuthResponse> {
+      return this.makeAuthApiCall('register', user);
+    }
+
+    private makeAuthApiCall(urlPath: string, user: User): Promise<AuthResponse> {
+      const url: string = `${this.apiBaseUrl}/${urlPath}`;
+      return this.http
+        .post(url, user)
+        .toPromise()
+        .then(response => response.json() as AuthResponse)
+        .catch(this.handleError);
     }
     
 
